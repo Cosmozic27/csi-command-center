@@ -5,3 +5,5 @@ export * from './mock-projects';
 export * from './mock-events';
 export * from './mock-notifications';
 export * from './mock-activity';
+export * from './mock-approvals';
+export * from './mock-announcements';
