@@ -26,6 +26,7 @@ export interface User {
   avatarUrl: string | null;
   initials: string;
   primaryRole: UserRole;
+  role?: UserRole;
   phone?: string;
   bio?: string;
   skills: string[];
@@ -58,9 +59,11 @@ export interface Team {
   isActive: boolean;
   memberCount: number;
   activeTasks: number;
+  activeTasksCount?: number;
   completedTasks: number;
   progressPercentage: number;
   teamLead: Pick<User, "id" | "fullName" | "initials" | "avatarUrl"> | null;
+  leadName?: string;
 }
 
 export interface TeamMembership {
@@ -102,9 +105,11 @@ export interface Task {
   taskType: TaskType;
   assignedTeamId: string;
   assignedTeamName: string;
+  teamName?: string;
   assignedTeamSlug: TeamSlug;
   assignedUserId: string | null;
   assignedUserName: string | null;
+  assigneeName?: string;
   createdById: string;
   projectId: string | null;
   eventId: string | null;
@@ -138,6 +143,7 @@ export interface Project {
   ownerId: string;
   ownerName: string;
   participatingTeams: Pick<Team, "id" | "name" | "slug" | "icon" | "color">[];
+  leadTeamName?: string;
   startDate: string;
   endDate: string;
   progressPercentage: number;
@@ -169,15 +175,20 @@ export type EventType =
 export interface Event {
   id: string;
   name: string;
+  title?: string;
   description: string;
   eventType: EventType;
   venue: string;
   startDatetime: string;
+  startDate?: string;
   endDatetime: string;
+  endDate?: string;
   eventLeadId: string;
   eventLeadName: string;
   status: EventStatus;
   registrationUrl: string | null;
+  registeredCount?: number;
+  maxCapacity?: number;
   participatingTeams: Pick<Team, "id" | "name" | "slug" | "icon" | "color">[];
   projectId: string | null;
   taskCount: number;
@@ -191,10 +202,18 @@ export interface Event {
 // Notification
 // ------------------------------------------------------------
 export type NotificationType =
+  | "INFO"
+  | "WARNING"
+  | "SUCCESS"
+  | "ERROR"
+  | "STATUS_CHANGE"
+  | "DEADLINE_WARNING"
+  | "APPROVAL_REQUEST"
   | "TASK_ASSIGNED"
   | "TASK_COMPLETED"
   | "TASK_OVERDUE"
   | "DEADLINE_APPROACHING"
+  | "APPROVAL_SUBMITTED"
   | "WORK_SUBMITTED"
   | "WORK_APPROVED"
   | "WORK_REJECTED"
@@ -305,13 +324,17 @@ export interface ActivityLog {
   id: string;
   actorId: string;
   actorName: string;
+  userName?: string;
   actorRole: UserRole;
   actorTeam: string;
   type: ActivityType;
+  action?: string;
+  targetName?: string;
   description: string;
   relatedId: string | null;
   relatedType: "task" | "project" | "event" | "file" | "user" | null;
   createdAt: string;
+  timestamp?: string;
 }
 
 // ------------------------------------------------------------

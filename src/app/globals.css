@@ -54,9 +54,25 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Custom Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #060b13;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
 /* Futuristic Command Center Utilities */
@@ -64,7 +80,16 @@ body {
   background: rgba(11, 19, 36, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.glass-panel-hover {
+  transition: all 0.2s ease-in-out;
+}
+.glass-panel-hover:hover {
+  background: rgba(15, 25, 48, 0.85);
+  border-color: rgba(0, 229, 255, 0.3);
+  box-shadow: 0 0 25px -5px rgba(0, 229, 255, 0.15);
 }
 
 .glow-cyan {
@@ -75,6 +100,35 @@ body {
   box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.35);
 }
 
+.glow-emerald {
+  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.35);
+}
+
 .border-glow {
   border-color: rgba(0, 229, 255, 0.4);
+}
+
+/* Tech grid background */
+.cyber-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.cyber-radial {
+  background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+}
+
+.badge-pulse {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
