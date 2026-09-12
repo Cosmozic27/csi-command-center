@@ -28,9 +28,35 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: Avoid writing logic between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could compromise security.
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const pathname = request.nextUrl.pathname;
+
+  // Protected paths that require authentication
+  const isProtectedPath =
+    pathname.startsWith("/command-center") ||
+    pathname.startsWith("/portals") ||
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/projects") ||
+    pathname.startsWith("/events");
+
+  // Redirect unauthenticated visitors attempting to access protected routes to /login
+  if (!user && isProtectedPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(url);
+  }
+
+  // Redirect authenticated visitors away from /login or /signup
+  if (user && (pathname === "/login" || pathname === "/signup")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/command-center";
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }

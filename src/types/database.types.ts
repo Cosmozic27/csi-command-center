@@ -47,6 +47,7 @@ export interface Database {
           phone: string | null;
           bio: string | null;
           skills: string[] | null;
+          primary_role_id: string | null;
           is_active: boolean;
           created_at: string;
           updated_at: string;
@@ -60,6 +61,7 @@ export interface Database {
           phone?: string | null;
           bio?: string | null;
           skills?: string[] | null;
+          primary_role_id?: string | null;
           is_active?: boolean;
           created_at?: string;
           updated_at?: string;
@@ -73,10 +75,20 @@ export interface Database {
           phone?: string | null;
           bio?: string | null;
           skills?: string[] | null;
+          primary_role_id?: string | null;
           is_active?: boolean;
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "users_primary_role_id_fkey";
+            columns: ["primary_role_id"];
+            isOneToOne: false;
+            referencedRelation: "roles";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       roles: {
         Row: {
@@ -97,6 +109,7 @@ export interface Database {
           description?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       teams: {
         Row: {
@@ -129,6 +142,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       team_members: {
         Row: {
@@ -161,6 +175,29 @@ export interface Database {
           left_at?: string | null;
           is_active?: boolean;
         };
+        Relationships: [
+          {
+            foreignKeyName: "team_members_role_id_fkey";
+            columns: ["role_id"];
+            isOneToOne: false;
+            referencedRelation: "roles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "team_members_team_id_fkey";
+            columns: ["team_id"];
+            isOneToOne: false;
+            referencedRelation: "teams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "team_members_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       tasks: {
         Row: {
@@ -217,6 +254,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
     };
     Views: {
@@ -230,3 +268,8 @@ export interface Database {
     };
   };
 }
+
+export type Team = Database["public"]["Tables"]["teams"]["Row"];
+export type UserProfile = Database["public"]["Tables"]["users"]["Row"];
+export type Role = Database["public"]["Tables"]["roles"]["Row"];
+export type TeamMember = Database["public"]["Tables"]["team_members"]["Row"];
