@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060b13;
-  --foreground: #f1f5f9;
-  --card: #0b1324;
+  --background: #0b1220;
+  --foreground: #e8eef7;
+  --card: #111b2d;
   --card-foreground: #f8fafc;
   --popover: #0b1324;
   --popover-foreground: #f8fafc;
@@ -11,15 +11,15 @@
   --primary-foreground: #041017;
   --secondary: #6366f1;
   --secondary-foreground: #ffffff;
-  --muted: #131e36;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #38bdf8;
+  --muted: #182337;
+  --muted-foreground: #9aa9bd;
+  --accent: #1d2a40;
+  --accent-foreground: #55c7e8;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #00e5ff;
+  --border: #26364d;
+  --input: #26364d;
+  --ring: #28b8df;
   --radius: 0.75rem;
 
   --chart-1: #00e5ff;
@@ -75,21 +75,21 @@ body {
   background: #334155;
 }
 
-/* Futuristic Command Center Utilities */
+/* Shared surfaces */
 .glass-panel {
-  background: rgba(11, 19, 36, 0.75);
+  background: rgba(17, 27, 45, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.14);
 }
 
 .glass-panel-hover {
   transition: all 0.2s ease-in-out;
 }
 .glass-panel-hover:hover {
-  background: rgba(15, 25, 48, 0.85);
-  border-color: rgba(0, 229, 255, 0.3);
-  box-shadow: 0 0 25px -5px rgba(0, 229, 255, 0.15);
+  background: rgba(25, 39, 62, 0.95);
+  border-color: rgba(40, 184, 223, 0.45);
+  box-shadow: 0 12px 30px -24px rgba(0, 0, 0, 0.8);
 }
 
 .glow-cyan {
@@ -108,12 +108,9 @@ body {
   border-color: rgba(0, 229, 255, 0.4);
 }
 
-/* Tech grid background */
+/* Kept as a compatibility utility; application surfaces no longer use it globally. */
 .cyber-grid {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-image: none;
 }
 
 .cyber-radial {

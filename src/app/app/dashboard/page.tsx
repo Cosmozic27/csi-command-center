@@ -179,33 +179,31 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Dynamic Executive Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-cyan-500/20 bg-linear-to-r from-card/90 via-card/60 to-cyan-950/25 p-6 backdrop-blur-xl">
-        <div className="absolute -right-12 -top-12 h-64 w-64 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/90 p-6">
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2.5">
-              <span className="text-xs font-mono font-semibold uppercase tracking-widest text-cyan-400">
-                // {userRole} COMMAND PORTAL
-              </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
+                <span className="text-sm font-medium text-cyan-400">
+                {userRole === 'FACULTY' ? 'Faculty overview' : userRole === 'CORE' ? 'Core team overview' : 'Your workspace'}
+                </span>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
               Welcome back, {currentUser.fullName}
             </h1>
             <p className="text-sm text-muted-foreground max-w-2xl">
               {userRole === 'FACULTY' &&
-                'Faculty Sponsor Command: Governing all 9 teams, approving budget allocations, and signing off on official events.'}
+                'Review committee health, approvals, budgets, and upcoming events from one place.'}
               {userRole === 'CORE' &&
-                'Core Executive Hub: Managing cross-team handoffs, strategic milestones, task bottlenecks, and committee directives.'}
+                'Coordinate cross-team work, project milestones, task bottlenecks, and committee priorities.'}
               {userRole === 'ADVISORY' &&
-                'Advisory Board Station: Reviewing active initiatives, auditing event readiness, and mentoring committee leads.'}
+                'Review active initiatives, monitor event readiness, and support committee leads.'}
               {userRole === 'TEAM_LEAD' &&
-                `Sector Lead Hub: Managing deliverables, assigning tasks, and coordinating cross-team dependencies for ${currentUser.teamMemberships?.[0]?.teamName || 'your team'}.`}
+                `Manage deliverables, assign tasks, and coordinate work for ${currentUser.teamMemberships?.[0]?.teamName || 'your team'}.`}
               {userRole === 'TEAM_MEMBER' &&
-                `Specialist Workspace: Executing assigned directives, preparing creative/technical assets, and logging milestones.`}
+                `Review assigned tasks, prepare work, and keep milestones up to date.`}
               {userRole === 'GENERAL_MEMBER' &&
-                'General Member Center: Accessing committee bulletins, registering for volunteer roles, and participating in flagship events.'}
+                'Find announcements, volunteer opportunities, and upcoming committee activities.'}
             </p>
           </div>
 
@@ -220,7 +218,7 @@ export default function DashboardPage() {
                 onClick={() => setIsCreateTaskOpen(true)}
               >
                 <Plus className="h-3.5 w-3.5 mr-1" />
-                Create Directive
+                Create task
               </Button>
             )}
 
@@ -231,7 +229,7 @@ export default function DashboardPage() {
                 onClick={() => setIsCreateAnnOpen(true)}
               >
                 <Megaphone className="h-3.5 w-3.5 mr-1 text-cyan-400" />
-                Broadcast Bulletin
+                New announcement
               </Button>
             )}
           </div>

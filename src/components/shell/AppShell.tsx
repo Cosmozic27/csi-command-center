@@ -21,7 +21,7 @@ export function AppShell({ children }: AppShellProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground cyber-grid">
+    <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
       {/* Desktop Sidebar */}
       <Sidebar />
 

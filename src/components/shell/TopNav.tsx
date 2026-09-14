@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Search, Bell, Menu, Shield, Terminal, ArrowUpRight } from 'lucide-react';
+import { Search, Bell, Menu, ArrowUpRight } from 'lucide-react';
 import { useMockSession } from '@/contexts/MockSessionContext';
 import { UserAvatar } from '@/components/ui/user-avatar';
-import { RoleBadge } from '@/components/ui/role-badge';
 import Link from 'next/link';
 
 interface TopNavProps {
@@ -24,7 +23,7 @@ export function TopNav({
 
   return (
     <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-border/70 bg-background/80 px-4 md:px-6 backdrop-blur-xl">
-      {/* Left: Mobile hamburger + System Status Beacon */}
+      {/* Left: Mobile hamburger + workspace context */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobileMenu}
@@ -33,17 +32,9 @@ export function TopNav({
           <Menu className="h-5 w-5" />
         </button>
 
-        {/* System telemetry chip */}
-        <div className="hidden sm:flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 px-3 py-1 text-xs">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
-          </span>
-          <span className="font-mono text-[11px] text-cyan-300 font-semibold tracking-wider">
-            CSI-NODE // READY
-          </span>
-          <span className="text-slate-600">|</span>
-          <span className="font-mono text-[10px] text-slate-400">9 TEAMS ACTIVE</span>
+        <div className="hidden sm:flex flex-col">
+          <span className="text-sm font-semibold text-foreground">Committee workspace</span>
+          <span className="text-xs text-muted-foreground">Plan, coordinate, and deliver together</span>
         </div>
       </div>
 
@@ -51,7 +42,7 @@ export function TopNav({
       <div className="flex-1 max-w-md mx-4">
         <button
           onClick={onOpenCommandPalette}
-          className="w-full flex items-center justify-between rounded-lg border border-border/80 bg-card/60 px-3.5 py-2 text-xs text-muted-foreground hover:border-cyan-500/40 hover:bg-card hover:text-foreground transition-all duration-200 cursor-pointer shadow-inner"
+          className="w-full flex items-center justify-between rounded-lg border border-border/80 bg-card px-3.5 py-2 text-xs text-muted-foreground hover:border-cyan-500/40 hover:bg-card hover:text-foreground transition-all duration-200 cursor-pointer"
         >
           <span className="flex items-center gap-2">
             <Search className="h-3.5 w-3.5 text-cyan-400" />

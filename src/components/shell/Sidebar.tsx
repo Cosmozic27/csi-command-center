@@ -31,11 +31,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard },
-  { name: 'Teams & Rosters', href: '/app/teams', icon: Users, badge: '9' },
+  { name: 'Teams', href: '/app/teams', icon: Users, badge: '9' },
   { name: 'Projects', href: '/app/projects', icon: FolderKanban, badge: '3' },
   { name: 'Events', href: '/app/events', icon: Calendar, badge: '3' },
-  { name: 'Tasks & Board', href: '/app/tasks', icon: CheckSquare, badge: '13' },
-  { name: 'Media & Files', href: '/app/files', icon: FileText },
+  { name: 'Tasks', href: '/app/tasks', icon: CheckSquare, badge: '13' },
+  { name: 'Files', href: '/app/files', icon: FileText },
   { name: 'Calendar', href: '/app/calendar', icon: Calendar },
   { name: 'Analytics', href: '/app/analytics', icon: BarChart3 },
   { name: 'Members', href: '/app/members', icon: Users },
@@ -57,7 +57,7 @@ export function Sidebar() {
       {/* Brand Header */}
       <div className="flex h-16 items-center justify-between px-4 border-b border-border/60">
         <Link href="/app/dashboard" className="flex items-center gap-3 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-cyan-500 to-blue-600 shadow-[0_0_15px_rgba(0,229,255,0.4)] ring-1 ring-cyan-400/50">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-400 ring-1 ring-cyan-300/30">
             <Shield className="h-5 w-5 text-slate-950" />
           </div>
           {!collapsed && (
@@ -65,8 +65,8 @@ export function Sidebar() {
               <span className="font-bold text-sm tracking-wider text-foreground uppercase group-hover:text-cyan-400 transition-colors">
                 CSI Command
               </span>
-              <span className="text-[10px] font-mono text-cyan-400/80 tracking-widest uppercase">
-                Operating System
+              <span className="text-[10px] text-muted-foreground tracking-wide">
+                Committee workspace
               </span>
             </div>
           )}
@@ -129,7 +129,7 @@ export function Sidebar() {
               href={item.href}
               className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 isActive
-                  ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_-4px_rgba(0,229,255,0.3)]'
+                  ? 'bg-cyan-400/10 text-cyan-300 border border-cyan-400/25'
                   : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
               } ${collapsed ? 'justify-center' : ''}`}
               title={collapsed ? item.name : undefined}
