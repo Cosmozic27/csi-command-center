@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b1220;
-  --foreground: #e8eef7;
-  --card: #111b2d;
-  --card-foreground: #f8fafc;
-  --popover: #0b1324;
-  --popover-foreground: #f8fafc;
-  --primary: #00e5ff;
-  --primary-foreground: #041017;
-  --secondary: #6366f1;
-  --secondary-foreground: #ffffff;
-  --muted: #182337;
-  --muted-foreground: #9aa9bd;
-  --accent: #1d2a40;
-  --accent-foreground: #55c7e8;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #26364d;
-  --input: #26364d;
-  --ring: #28b8df;
+  --background: #f5f0e8;
+  --foreground: #302824;
+  --card: #fffdf8;
+  --card-foreground: #302824;
+  --popover: #fffdf8;
+  --popover-foreground: #302824;
+  --primary: #795548;
+  --primary-foreground: #fffdf8;
+  --secondary: #8d6e63;
+  --secondary-foreground: #fffdf8;
+  --muted: #eee5da;
+  --muted-foreground: #756b63;
+  --accent: #e8ded0;
+  --accent-foreground: #4e342e;
+  --destructive: #a85d55;
+  --destructive-foreground: #fffdf8;
+  --border: #d8cabb;
+  --input: #d8cabb;
+  --ring: #a67c52;
   --radius: 0.75rem;
 
   --chart-1: #00e5ff;
@@ -57,6 +57,22 @@ body {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle at 15% 10%, rgba(166, 124, 82, 0.10), transparent 34%), radial-gradient(circle at 90% 80%, rgba(141, 110, 99, 0.08), transparent 38%);
+  animation: warm-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes warm-drift {
+  from { transform: translate3d(-1%, -1%, 0) scale(1); }
+  to { transform: translate3d(1%, 1%, 0) scale(1.03); }
 }
 
 /* Custom Cyber Scrollbar */
@@ -65,14 +81,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #060b13;
+  background: #f5f0e8;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbbbaa;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #a67c52;
 }
 
 /* Shared surfaces */
@@ -114,8 +130,19 @@ body {
 }
 
 .cyber-radial {
-  background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 0%, rgba(166, 124, 82, 0.08) 0%, transparent 60%);
 }
+
+/* Warm design-system compatibility for legacy utility classes. */
+[class*="text-cyan-"], [class*="text-blue-"], [class*="text-indigo-"], [class*="text-violet-"] { color: #795548 !important; }
+[class*="bg-cyan-"], [class*="bg-blue-"], [class*="bg-indigo-"], [class*="bg-violet-"] { background-color: rgba(166, 124, 82, 0.12) !important; }
+[class*="border-cyan-"], [class*="border-blue-"], [class*="border-indigo-"], [class*="border-violet-"] { border-color: rgba(166, 124, 82, 0.35) !important; }
+[class*="from-cyan-"], [class*="from-blue-"], [class*="from-indigo-"], [class*="from-violet-"] { --tw-gradient-from: #a67c52 !important; }
+[class*="to-cyan-"], [class*="to-blue-"], [class*="to-indigo-"], [class*="to-violet-"] { --tw-gradient-to: #795548 !important; }
+[class*="bg-slate-"] { background-color: #fffdf8 !important; }
+[class*="text-slate-"] { color: #756b63 !important; }
+[class*="border-slate-"] { border-color: #d8cabb !important; }
+[class*="text-white"] { color: #302824 !important; }
 
 .badge-pulse {
   animation: pulse-subtle 2s infinite ease-in-out;

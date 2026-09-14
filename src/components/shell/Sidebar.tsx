@@ -27,19 +27,20 @@ interface NavItem {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
+  section: 'Workspace' | 'Resources' | 'Insights';
 }
 
 const navItems: NavItem[] = [
-  { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard },
-  { name: 'Teams', href: '/app/teams', icon: Users, badge: '9' },
-  { name: 'Projects', href: '/app/projects', icon: FolderKanban, badge: '3' },
-  { name: 'Events', href: '/app/events', icon: Calendar, badge: '3' },
-  { name: 'Tasks', href: '/app/tasks', icon: CheckSquare, badge: '13' },
-  { name: 'Files', href: '/app/files', icon: FileText },
-  { name: 'Calendar', href: '/app/calendar', icon: Calendar },
-  { name: 'Analytics', href: '/app/analytics', icon: BarChart3 },
-  { name: 'Members', href: '/app/members', icon: Users },
-  { name: 'Activity', href: '/app/activity', icon: Activity },
+  { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard, section: 'Workspace' },
+  { name: 'Teams', href: '/app/teams', icon: Users, badge: '9', section: 'Workspace' },
+  { name: 'Projects', href: '/app/projects', icon: FolderKanban, badge: '3', section: 'Workspace' },
+  { name: 'Events', href: '/app/events', icon: Calendar, badge: '3', section: 'Workspace' },
+  { name: 'Tasks', href: '/app/tasks', icon: CheckSquare, badge: '13', section: 'Workspace' },
+  { name: 'Files', href: '/app/files', icon: FileText, section: 'Resources' },
+  { name: 'Calendar', href: '/app/calendar', icon: Calendar, section: 'Resources' },
+  { name: 'Members', href: '/app/members', icon: Users, section: 'Resources' },
+  { name: 'Analytics', href: '/app/analytics', icon: BarChart3, section: 'Insights' },
+  { name: 'Activity', href: '/app/activity', icon: Activity, section: 'Insights' },
 ];
 
 export function Sidebar() {
@@ -50,7 +51,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/80 bg-card/60 backdrop-blur-xl transition-all duration-300 z-30 ${
+      className={`hidden md:flex flex-col border-r border-[#d8cabb] bg-[#e8ded0] transition-all duration-300 z-30 ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >
@@ -118,14 +119,15 @@ export function Sidebar() {
 
       {/* Main Navigation Links */}
       <nav className="flex-1 space-y-1 p-3 overflow-y-auto">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const isActive =
             pathname === item.href || (item.href !== '/app/dashboard' && pathname.startsWith(item.href));
           const Icon = item.icon;
 
           return (
+            <React.Fragment key={item.href}>
+            {!collapsed && (index === 0 || navItems[index - 1].section !== item.section) && <p className="mb-2 mt-4 px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9a8f86] first:mt-0">{item.section}</p>}
             <Link
-              key={item.href}
               href={item.href}
               className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 isActive
@@ -156,6 +158,7 @@ export function Sidebar() {
                 </div>
               )}
             </Link>
+            </React.Fragment>
           );
         })}
       </nav>
