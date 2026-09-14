@@ -11,6 +11,7 @@ import {
   CheckSquare,
   FileText,
   BarChart3,
+  Activity,
   ChevronLeft,
   ChevronRight,
   Shield,
@@ -37,6 +38,8 @@ const navItems: NavItem[] = [
   { name: 'Media & Files', href: '/app/files', icon: FileText },
   { name: 'Calendar', href: '/app/calendar', icon: Calendar },
   { name: 'Analytics', href: '/app/analytics', icon: BarChart3 },
+  { name: 'Members', href: '/app/members', icon: Users },
+  { name: 'Activity', href: '/app/activity', icon: Activity },
 ];
 
 export function Sidebar() {

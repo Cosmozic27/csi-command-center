@@ -9,6 +9,9 @@ import {
   FolderKanban,
   Calendar,
   CheckSquare,
+  FileText,
+  BarChart3,
+  Activity,
   ArrowRight,
   Sparkles,
 } from 'lucide-react';
@@ -37,6 +40,11 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     { label: 'Projects Overview', href: '/app/projects', icon: FolderKanban, category: 'Navigation' },
     { label: 'Events Calendar', href: '/app/events', icon: Calendar, category: 'Navigation' },
     { label: 'Task Kanban Board', href: '/app/tasks', icon: CheckSquare, category: 'Navigation' },
+    { label: 'Files & Repository', href: '/app/files', icon: FileText, category: 'Navigation' },
+    { label: 'Calendar', href: '/app/calendar', icon: Calendar, category: 'Navigation' },
+    { label: 'Analytics', href: '/app/analytics', icon: BarChart3, category: 'Navigation' },
+    { label: 'Members', href: '/app/members', icon: Users, category: 'Navigation' },
+    { label: 'Activity Log', href: '/app/activity', icon: Activity, category: 'Navigation' },
   ];
 
   const filteredItems = useMemo(() => {
