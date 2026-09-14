@@ -1,55 +1,15 @@
 'use client';
 
-import React from 'react';
-import { Calendar as CalendarIcon, Clock, ChevronRight } from 'lucide-react';
-import { MOCK_EVENTS } from '@/data/mock-events';
-import { StatusBadge } from '@/components/ui/status-badge';
+import { useMemo, useState } from 'react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock3, MapPin } from 'lucide-react';
+import { MOCK_CALENDAR_ENTRIES, type CalendarEntry } from '@/data/mock-workspace';
+import { PageIntro, Pill, SectionTitle, WorkspaceCard } from '@/components/workspace/WorkspacePrimitives';
 
+const tone = (type: CalendarEntry['type']) => type === 'EVENT' ? 'cyan' : type === 'DEADLINE' ? 'red' : type === 'MEETING' ? 'violet' : 'emerald';
 export default function CalendarPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-semibold uppercase tracking-wider">
-          <CalendarIcon className="h-4 w-4" />
-          <span>Timeline & Milestones</span>
-        </div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground mt-1">
-          Integrated Operations Calendar
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Upcoming deadlines, workshop dates, committee syncs, and flagship releases.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        {MOCK_EVENTS.map((event) => (
-          <div
-            key={event.id}
-            className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-border/80 bg-card/70 backdrop-blur-md hover:border-cyan-500/40 transition-all"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 flex-col items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
-                <span className="text-[10px] font-mono uppercase">
-                  {new Date(event.startDatetime).toLocaleString('default', { month: 'short' })}
-                </span>
-                <span className="text-base font-bold font-mono">
-                  {new Date(event.startDatetime).getDate()}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-semibold text-sm text-foreground">{event.name}</h3>
-                <span className="text-xs text-muted-foreground">
-                  {event.venue} • {new Date(event.startDatetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <StatusBadge status={event.status} size="sm" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const [filter, setFilter] = useState<'ALL' | CalendarEntry['type']>('ALL');
+  const [selected, setSelected] = useState(MOCK_CALENDAR_ENTRIES[0]);
+  const entries = useMemo(() => MOCK_CALENDAR_ENTRIES.filter((item) => filter === 'ALL' || item.type === filter), [filter]);
+  const days = Array.from({ length: 31 }, (_, index) => index + 1);
+  return <div className="space-y-6"><PageIntro eyebrow="Timeline & milestones" title="Committee calendar" description="Events, deadlines, meetings, and project milestones in one filtered operating schedule." action={<div className="flex items-center gap-2 rounded-xl border border-border/70 bg-card/60 px-3 py-2 text-sm"><ChevronLeft className="h-4 w-4 text-muted-foreground" /><span className="font-semibold">October 2026</span><ChevronRight className="h-4 w-4 text-muted-foreground" /></div>} /><div className="flex flex-wrap gap-2">{(['ALL', 'EVENT', 'DEADLINE', 'MEETING', 'MILESTONE'] as const).map((item) => <button key={item} onClick={() => setFilter(item)} className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold ${filter === item ? 'border-cyan-400/50 bg-cyan-400/10 text-cyan-300' : 'border-border text-muted-foreground'}`}>{item === 'ALL' ? 'All entries' : item}</button>)}</div><div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]"><WorkspaceCard><SectionTitle title="October 2026" detail="Select a scheduled item to inspect ownership and handoff context" /><div className="grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">{['SUN','MON','TUE','WED','THU','FRI','SAT'].map((day) => <div key={day} className="p-2 font-mono">{day}</div>)}{Array.from({ length: 4 }).map((_, i) => <div key={`empty-${i}`} />)}{days.map((day) => { const dayEntries = entries.filter((entry) => Number(entry.date.slice(-2)) === day); return <div key={day} className={`min-h-20 rounded-lg border p-2 text-left ${dayEntries.length ? 'border-cyan-400/20 bg-cyan-400/5' : 'border-border/40 bg-muted/10'}`}><span className="font-mono text-xs text-muted-foreground">{day}</span><div className="mt-1 space-y-1">{dayEntries.map((entry) => <button key={entry.id} onClick={() => setSelected(entry)} className="w-full truncate rounded bg-muted/70 px-1 py-1 text-left text-[9px] text-cyan-200">{entry.title}</button>)}</div></div>})}</div></WorkspaceCard><WorkspaceCard><SectionTitle title="Selected schedule item" /><Pill tone={tone(selected.type)}>{selected.type}</Pill><h2 className="mt-3 text-lg font-bold">{selected.title}</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{selected.detail}</p><div className="mt-5 space-y-3 text-xs"><p className="flex items-center gap-2 text-muted-foreground"><CalendarIcon className="h-4 w-4 text-cyan-400" />{new Date(selected.date).toLocaleDateString('en-US', { dateStyle: 'full' })}</p><p className="flex items-center gap-2 text-muted-foreground"><Clock3 className="h-4 w-4 text-violet-400" />{selected.time}</p><p className="flex items-center gap-2 text-muted-foreground"><MapPin className="h-4 w-4 text-emerald-400" />{selected.team}</p></div></WorkspaceCard></div></div>;
 }

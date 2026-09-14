@@ -1,56 +1,15 @@
 'use client';
 
-import React from 'react';
-import { FileText, Upload, Folder, Image, FileCode } from 'lucide-react';
-import { EmptyState } from '@/components/ui/empty-state';
+import { useMemo, useState } from 'react';
+import { Download, Eye, FileCode2, FileImage, FileText, History, Search, Upload } from 'lucide-react';
+import { MOCK_WORKSPACE_FILES, type WorkspaceFile } from '@/data/mock-workspace';
+import { PageIntro, Pill, SectionTitle, WorkspaceCard } from '@/components/workspace/WorkspacePrimitives';
 
+const iconByType = { PDF: FileText, DOC: FileText, IMAGE: FileImage, CODE: FileCode2 };
 export default function FilesPage() {
-  const sampleFiles = [
-    { name: 'CSI_TechFest_Sponsorship_Brochure_v2.pdf', size: '4.2 MB', team: 'Publicity', type: 'pdf' },
-    { name: 'Hackathon_Rulebook_2026.docx', size: '1.8 MB', team: 'Documentation', type: 'doc' },
-    { name: 'Banner_Asset_Figma_Export.png', size: '12.4 MB', team: 'Graphics', type: 'img' },
-    { name: 'Registration_Schema_v1.sql', size: '45 KB', team: 'Technical', type: 'code' },
-  ];
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-semibold uppercase tracking-wider">
-            <FileText className="h-4 w-4" />
-            <span>Digital Repository</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground mt-1">
-            Media & Asset Storage
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Centralized documents, promotional graphics, reports, and templates.
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {sampleFiles.map((file, i) => (
-          <div
-            key={i}
-            className="p-4 rounded-xl border border-border/80 bg-card/70 backdrop-blur-md hover:border-cyan-500/40 transition-all flex flex-col justify-between"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
-                <FileText className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <span className="font-semibold text-xs text-foreground block truncate">
-                  {file.name}
-                </span>
-                <span className="text-[10px] text-muted-foreground font-mono">
-                  {file.team} • {file.size}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const [files, setFiles] = useState(MOCK_WORKSPACE_FILES);
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState<WorkspaceFile | null>(null);
+  const visible = useMemo(() => files.filter((file) => `${file.name} ${file.team} ${file.project} ${file.status}`.toLowerCase().includes(query.toLowerCase())), [files, query]);
+  return <div className="space-y-6"><PageIntro eyebrow="Digital repository" title="Media & files" description="A centralized frontend for assets, documents, version history, and review handoffs—ready for future storage integration." action={<button onClick={() => setFiles([{ id: `file-${Date.now()}`, name: 'New upload — awaiting metadata', type: 'DOC', size: 'Pending', version: 1, team: 'Core', project: 'Unassigned', status: 'DRAFT', updatedAt: 'Just now' }, ...files])} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950"><Upload className="h-4 w-4" /> Upload mock file</button>} /><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search files, teams, projects, or review status..." className="w-full rounded-xl border border-border/70 bg-card/60 py-3 pl-9 pr-3 text-sm outline-none focus:border-cyan-400/50" /></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visible.map((file) => { const Icon = iconByType[file.type]; return <button key={file.id} onClick={() => setSelected(file)} className="text-left"><WorkspaceCard className="h-full hover:border-cyan-400/40"><div className="flex items-start justify-between gap-3"><div className="flex items-center gap-3"><div className="rounded-xl border border-cyan-400/20 bg-cyan-400/10 p-2.5 text-cyan-300"><Icon className="h-5 w-5" /></div><div className="min-w-0"><h3 className="truncate text-sm font-semibold">{file.name}</h3><p className="mt-1 text-[11px] text-muted-foreground">{file.type} · {file.size}</p></div></div><Pill tone={file.status === 'APPROVED' ? 'emerald' : file.status === 'IN REVIEW' ? 'amber' : 'slate'}>{file.status}</Pill></div><div className="mt-5 grid grid-cols-2 gap-3 text-xs"><div><p className="text-muted-foreground">Team</p><p className="mt-1 font-medium">{file.team}</p></div><div><p className="text-muted-foreground">Version</p><p className="mt-1 flex items-center gap-1 font-medium"><History className="h-3.5 w-3.5 text-violet-300" />V{file.version}</p></div></div><p className="mt-4 text-[11px] text-muted-foreground">Updated {file.updatedAt}</p></WorkspaceCard></button>})}</div>{selected && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setSelected(null)}><div className="w-full max-w-lg" onClick={(e) => e.stopPropagation()}><WorkspaceCard><div className="flex items-start justify-between"><div><p className="font-mono text-xs uppercase tracking-wider text-cyan-400">File preview</p><h2 className="mt-1 text-lg font-bold">{selected.name}</h2></div><Pill tone="cyan">V{selected.version}</Pill></div><div className="mt-5 flex h-44 items-center justify-center rounded-xl border border-dashed border-border bg-muted/20 text-sm text-muted-foreground">Preview surface · storage connector pending</div><div className="mt-4 flex gap-2"><button className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-3 py-2 text-xs font-bold text-slate-950"><Eye className="h-3.5 w-3.5" /> Open preview</button><button className="inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-xs font-semibold"><Download className="h-3.5 w-3.5" /> Download mock</button></div><SectionTitle title="Version history" detail="Changes remain visible for future audit integration" /><div className="space-y-2 text-xs text-muted-foreground"><p className="rounded-lg bg-muted/30 p-3">V{selected.version} · Uploaded by {selected.team} · {selected.updatedAt}</p><p className="rounded-lg bg-muted/20 p-3">V1 · Initial working draft · archived</p></div></WorkspaceCard></div></div>}</div>;
 }

@@ -1,70 +1,14 @@
 'use client';
 
-import React from 'react';
+import { useState } from 'react';
+import { Calendar, CheckCircle2, Clock3, MapPin, Plus, Users } from 'lucide-react';
 import { MOCK_EVENTS } from '@/data/mock-events';
-import { Calendar, MapPin, Users } from 'lucide-react';
+import { PageIntro, Pill, ProgressBar, SectionTitle, WorkspaceCard } from '@/components/workspace/WorkspacePrimitives';
 import { StatusBadge } from '@/components/ui/status-badge';
 
 export default function EventsPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-semibold uppercase tracking-wider">
-          <Calendar className="h-4 w-4" />
-          <span>Operational Operations</span>
-        </div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground mt-1">
-          CSI Events Schedule
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Official flagship events, technical workshops, and coding challenges.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {MOCK_EVENTS.map((event) => (
-          <div
-            key={event.id}
-            className="rounded-xl border border-border/80 bg-card/70 p-5 backdrop-blur-md hover:border-cyan-500/40 transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-start justify-between">
-                <h3 className="font-bold text-base text-foreground">{event.name}</h3>
-                <StatusBadge status={event.status} size="sm" />
-              </div>
-              <p className="mt-2 text-xs text-muted-foreground">{event.description}</p>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-border/50 space-y-2 text-xs text-slate-400">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-cyan-400" />
-                  Venue:
-                </span>
-                <span className="text-foreground font-medium">{event.venue}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5 text-violet-400" />
-                  Date:
-                </span>
-                <span className="font-mono text-[11px]">
-                  {new Date(event.startDatetime).toLocaleDateString()}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Users className="h-3.5 w-3.5 text-emerald-400" />
-                  Teams:
-                </span>
-                <span className="font-mono text-[11px] text-cyan-300">
-                  {event.participatingTeams.length} Teams Involved
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const [selected, setSelected] = useState(MOCK_EVENTS[0]);
+  const [checked, setChecked] = useState([true, true, false, false]);
+  const checklist = ['Confirm venue and AV', 'Publish registration page', 'Approve campaign creative', 'Assign documentation volunteers'];
+  return <div className="space-y-6"><PageIntro eyebrow="Operations calendar" title="Event management" description="Turn every event into a coordinated workspace with owners, volunteers, checklists, and team handoffs." action={<button className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950"><Plus className="h-4 w-4" /> Create event</button>} /><div className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]"><div className="space-y-3">{MOCK_EVENTS.map((event) => <button key={event.id} onClick={() => setSelected(event)} className={`w-full text-left ${selected.id === event.id ? 'ring-1 ring-cyan-400/50' : ''}`}><WorkspaceCard className="hover:border-cyan-400/40"><div className="flex items-start justify-between gap-3"><div><h3 className="font-semibold">{event.name}</h3><p className="mt-1 text-xs text-muted-foreground">{event.description}</p></div><StatusBadge status={event.status} size="sm" /></div><div className="mt-4 flex flex-wrap gap-3 text-[11px] text-muted-foreground"><span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5 text-cyan-400" />{new Date(event.startDatetime).toLocaleDateString()}</span><span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5 text-violet-400" />{event.venue}</span></div></WorkspaceCard></button>)}</div><WorkspaceCard><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-mono text-xs uppercase tracking-wider text-cyan-400">Event workspace</p><h2 className="mt-1 text-xl font-bold">{selected.name}</h2></div><Pill tone="cyan">{selected.eventType}</Pill></div><p className="mt-3 text-sm leading-6 text-muted-foreground">{selected.description}</p><div className="mt-5 grid gap-3 sm:grid-cols-3"><div className="rounded-xl bg-muted/40 p-3"><MapPin className="h-4 w-4 text-cyan-400" /><p className="mt-2 text-[11px] text-muted-foreground">Venue</p><p className="text-sm font-semibold">{selected.venue}</p></div><div className="rounded-xl bg-muted/40 p-3"><Clock3 className="h-4 w-4 text-violet-400" /><p className="mt-2 text-[11px] text-muted-foreground">Starts</p><p className="text-sm font-semibold">{new Date(selected.startDatetime).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</p></div><div className="rounded-xl bg-muted/40 p-3"><Users className="h-4 w-4 text-emerald-400" /><p className="mt-2 text-[11px] text-muted-foreground">Teams</p><p className="text-sm font-semibold">{selected.participatingTeams.length} participating</p></div></div><SectionTitle title="Execution checklist" detail={`${checked.filter(Boolean).length} of ${checklist.length} complete`} /><div className="mb-4"><ProgressBar value={(checked.filter(Boolean).length / checklist.length) * 100} color="bg-emerald-400" /></div><div className="space-y-2">{checklist.map((item, index) => <button key={item} onClick={() => setChecked((items) => items.map((value, i) => i === index ? !value : value))} className="flex w-full items-center gap-3 rounded-xl border border-border/60 bg-muted/20 p-3 text-left hover:border-cyan-400/30"><CheckCircle2 className={`h-4 w-4 ${checked[index] ? 'text-emerald-400' : 'text-muted-foreground'}`} /><span className={`text-sm ${checked[index] ? 'text-foreground line-through opacity-70' : 'text-muted-foreground'}`}>{item}</span></button>)}</div><SectionTitle title="Cross-team handoff" detail="Ownership remains visible from brief to report" /><div className="flex flex-wrap gap-2">{selected.participatingTeams.map((team) => <Pill key={team.id} tone="violet">{team.name}</Pill>)}</div></WorkspaceCard></div></div>;
 }

@@ -1,63 +1,22 @@
 'use client';
 
-import React from 'react';
+import { useMemo, useState } from 'react';
+import { Calendar, FolderKanban, MessageSquare, Plus, Search, Users } from 'lucide-react';
 import { MOCK_PROJECTS } from '@/data/mock-projects';
-import { FolderKanban, Calendar, Users } from 'lucide-react';
+import { MOCK_COMMENTS } from '@/data/mock-workspace';
+import { PageIntro, Pill, ProgressBar, SectionTitle, WorkspaceCard } from '@/components/workspace/WorkspacePrimitives';
 import { StatusBadge } from '@/components/ui/status-badge';
 
 export default function ProjectsPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-semibold uppercase tracking-wider">
-          <FolderKanban className="h-4 w-4" />
-          <span>Strategic Initiatives</span>
-        </div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground mt-1">
-          CSI Projects & Milestones
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          High-level tracking of active college tech events, hackathons, and multi-team initiatives.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {MOCK_PROJECTS.map((project) => (
-          <div
-            key={project.id}
-            className="rounded-xl border border-border/80 bg-card/70 p-5 backdrop-blur-md hover:border-cyan-500/40 transition-all flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-start justify-between">
-                <h3 className="font-bold text-base text-foreground">{project.name}</h3>
-                <StatusBadge status={project.status} size="sm" />
-              </div>
-              <p className="mt-2 text-xs text-muted-foreground">{project.description}</p>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-border/50 space-y-2 text-xs text-slate-400">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Users className="h-3.5 w-3.5 text-cyan-400" />
-                  Lead Team:
-                </span>
-                <span className="text-foreground font-medium">
-                  {project.leadTeamName || project.participatingTeams?.[0]?.name || 'Core Team'}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5 text-violet-400" />
-                  Timeline:
-                </span>
-                <span className="font-mono text-[11px]">
-                  {new Date(project.startDate).toLocaleDateString()} – {new Date(project.endDate).toLocaleDateString()}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState(MOCK_PROJECTS[0]);
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState(MOCK_COMMENTS);
+  const projects = useMemo(() => MOCK_PROJECTS.filter((p) => `${p.name} ${p.description}`.toLowerCase().includes(query.toLowerCase())), [query]);
+  return <div className="space-y-6">
+    <PageIntro eyebrow="Strategic initiatives" title="Projects workspace" description="Coordinate milestones, dependencies, teams, files, and discussions in one shared operating view." action={<button className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-cyan-300"><Plus className="h-4 w-4" /> New project</button>} />
+    <div className="grid gap-5 xl:grid-cols-[1fr_1.2fr]">
+      <div className="space-y-4"><div className="relative"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input aria-label="Search projects" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search projects..." className="w-full rounded-xl border border-border/70 bg-card/60 py-2.5 pl-9 pr-3 text-sm outline-none focus:border-cyan-400/50" /></div>{projects.map((project) => <button key={project.id} onClick={() => setSelected(project)} className={`w-full text-left ${selected.id === project.id ? 'ring-1 ring-cyan-400/50' : ''}`}><WorkspaceCard className="transition hover:border-cyan-400/40"><div className="flex items-start justify-between gap-3"><div><h3 className="font-semibold text-foreground">{project.name}</h3><p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{project.description}</p></div><StatusBadge status={project.status} size="sm" /></div><div className="mt-5 flex items-center justify-between text-xs text-muted-foreground"><span>{project.completedTaskCount}/{project.taskCount} tasks complete</span><span className="font-mono text-cyan-300">{project.progressPercentage}%</span></div><div className="mt-2"><ProgressBar value={project.progressPercentage} /></div></WorkspaceCard></button>)}</div>
+      <WorkspaceCard><SectionTitle title={selected.name} detail="Cross-team project command view" action={<Pill tone={selected.status === 'ACTIVE' ? 'emerald' : 'violet'}>{selected.status}</Pill>} /><p className="text-sm leading-6 text-muted-foreground">{selected.description}</p><div className="mt-5 grid gap-3 sm:grid-cols-3"><div className="rounded-xl bg-muted/40 p-3"><p className="text-xs text-muted-foreground">Lead</p><p className="mt-1 text-sm font-semibold">{selected.leadTeamName || 'Core Team'}</p></div><div className="rounded-xl bg-muted/40 p-3"><p className="text-xs text-muted-foreground">Timeline</p><p className="mt-1 flex items-center gap-1 text-sm font-semibold"><Calendar className="h-3.5 w-3.5 text-cyan-400" />{new Date(selected.endDate).toLocaleDateString()}</p></div><div className="rounded-xl bg-muted/40 p-3"><p className="text-xs text-muted-foreground">Work items</p><p className="mt-1 text-sm font-semibold">{selected.taskCount} tasks</p></div></div><SectionTitle title="Participating teams" detail="Shared ownership and handoffs" /><div className="flex flex-wrap gap-2">{selected.participatingTeams.map((team) => <Pill key={team.id} tone="cyan"><Users className="mr-1 h-3 w-3" />{team.name}</Pill>)}</div><SectionTitle title="Project discussion" detail="Contextual communication stays attached to the workspace" /><div className="space-y-3">{comments.map((item) => <div key={item.id} className="rounded-xl border border-border/60 bg-muted/25 p-3"><div className="flex items-center justify-between"><span className="text-xs font-semibold">{item.author}</span><span className="text-[10px] text-muted-foreground">{item.time}</span></div><p className="mt-1 text-xs leading-5 text-muted-foreground">{item.text}</p><span className="mt-2 inline-flex items-center gap-1 text-[10px] text-cyan-300"><MessageSquare className="h-3 w-3" />{item.replies} replies</span></div>)}<div className="flex gap-2"><input value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Add a project comment..." className="min-w-0 flex-1 rounded-xl border border-border/70 bg-background/50 px-3 py-2 text-xs outline-none focus:border-cyan-400/50" /><button onClick={() => { if (comment.trim()) { setComments([{ id: String(Date.now()), author: 'You', initials: 'YO', text: comment, time: 'Just now', replies: 0 }, ...comments]); setComment(''); } }} className="rounded-xl bg-cyan-400 px-3 text-xs font-bold text-slate-950">Post</button></div></div></WorkspaceCard></div>
+  </div>;
 }
