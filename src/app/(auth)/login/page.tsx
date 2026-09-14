@@ -20,12 +20,12 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const demoAccounts = [
-    { role: "FACULTY", email: "faculty@csi.college.edu", label: "Faculty Patron" },
-    { role: "CORE", email: "core@csi.college.edu", label: "Core Lead" },
-    { role: "ADVISORY", email: "advisory@csi.college.edu", label: "Senior Advisor" },
-    { role: "TEAM_LEAD", email: "graphics.lead@csi.college.edu", label: "Graphics Lead" },
-    { role: "TEAM_MEMBER", email: "tech.member@csi.college.edu", label: "Technical Dev" },
-    { role: "GENERAL_MEMBER", email: "general.member@csi.college.edu", label: "General Member" },
+    { role: "FACULTY", email: "faculty@csi.college.edu", label: "Faculty Patron", userId: "usr-faculty-01" },
+    { role: "CORE", email: "core@csi.college.edu", label: "Core Lead", userId: "usr-core-01" },
+    { role: "ADVISORY", email: "advisory@csi.college.edu", label: "Senior Advisor", userId: "usr-advisory-01" },
+    { role: "TEAM_LEAD", email: "graphics.lead@csi.college.edu", label: "Graphics Lead", userId: "usr-graphics-lead-01" },
+    { role: "TEAM_MEMBER", email: "tech.member@csi.college.edu", label: "Technical Dev", userId: "usr-tech-member-01" },
+    { role: "GENERAL_MEMBER", email: "general.member@csi.college.edu", label: "General Member", userId: "usr-general-01" },
   ];
 
   const handleSelectDemo = (demoEmail: string) => {
@@ -39,6 +39,21 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMessage(null);
 
+    // This project is currently frontend-only. Resolve demo accounts locally
+    // so the experience does not depend on placeholder Supabase credentials.
+    const demoAccount = demoAccounts.find(
+      (account) => account.email.toLowerCase() === email.trim().toLowerCase()
+    );
+    if (demoAccount && password === "DemoPassword2026!") {
+      try {
+        localStorage.setItem("csi_command_center_mock_user_id", demoAccount.userId);
+      } catch {
+        // Continue to the demo dashboard even when storage is unavailable.
+      }
+      window.location.assign("/app/dashboard");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -51,7 +66,11 @@ export default function LoginPage() {
     } catch (err: any) {
       // Next.js redirect throws NEXT_REDIRECT which is normal
       if (err?.message && !err.message.includes("NEXT_REDIRECT")) {
-        setErrorMessage(err.message || "An unexpected error occurred.");
+        setErrorMessage(
+          err.message.includes("fetch failed")
+            ? "Demo login is available with the role buttons below. Real Supabase login is not configured in this frontend-only environment."
+            : err.message || "An unexpected error occurred."
+        );
       }
     } finally {
       setLoading(false);
