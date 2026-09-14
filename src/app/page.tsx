@@ -8,6 +8,7 @@ import { MOCK_EVENTS } from "@/data/mock-events";
 import { MOCK_PROJECTS } from "@/data/mock-projects";
 import { MOCK_TASKS } from "@/data/mock-tasks";
 import { Magnetic, Reveal, SpotlightCard } from "@/components/experience/ExperienceLayer";
+import Topography from "@/components/Topography";
 
 const sections = [
   ['overview', 'Overview'], ['teams', 'Teams'], ['workflow', 'Workflow'], ['events', 'Events'], ['capabilities', 'Capabilities'], ['faq', 'FAQ'], ['contact', 'Contact'],
@@ -37,6 +38,7 @@ export default function Home() {
   }, []);
 
   return <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[620px] opacity-25 sm:h-[700px]" aria-hidden="true"><Topography lowColor="#D8C0A8" midColor="#A67C52" highColor="#5D4037" speed={0.12} morphSpeed={0.035} bands={1.65} thickness={0.008} scale={1.15} glow={0.08} contrast={2.2} brightness={0.9} opacity={0.48} grain={false} mouseInteraction={false} className="h-full w-full" /></div>
     <div className="fixed left-0 top-0 z-50 h-0.5 bg-[#a67c52] transition-[width] duration-150" style={{ width: `${progress}%` }} />
     <div className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-[#a67c52]/10 blur-3xl" />
     <div className="pointer-events-none absolute -right-24 top-[42%] h-80 w-80 rounded-full bg-[#795548]/10 blur-3xl" />
