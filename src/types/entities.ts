@@ -119,6 +119,21 @@ export interface Task {
   createdAt: string;
   updatedAt: string;
   dependsOnTaskIds: string[];
+  blockerReason?: string | null;
+  tags?: string[];
+  activityLog?: TaskActivity[];
+}
+
+// ------------------------------------------------------------
+// Task Activity (for detail view)
+// ------------------------------------------------------------
+export interface TaskActivity {
+  id: string;
+  actorName: string;
+  actorInitials: string;
+  action: string;
+  detail?: string;
+  timestamp: string;
 }
 
 // ------------------------------------------------------------
