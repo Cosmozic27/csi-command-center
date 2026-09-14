@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { signIn } from "@/lib/auth/actions";
 import { 
   Lock, 
   Mail, 
@@ -54,27 +53,10 @@ export default function LoginPage() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
-    try {
-      const res = await signIn(null, formData);
-      if (res && !res.success) {
-        setErrorMessage(res.error || "Authentication failed. Please verify credentials.");
-      }
-    } catch (err: any) {
-      // Next.js redirect throws NEXT_REDIRECT which is normal
-      if (err?.message && !err.message.includes("NEXT_REDIRECT")) {
-        setErrorMessage(
-          err.message.includes("fetch failed")
-            ? "Demo login is available with the role buttons below. Real Supabase login is not configured in this frontend-only environment."
-            : err.message || "An unexpected error occurred."
-        );
-      }
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
+    setErrorMessage(
+      "Use one of the six demo accounts and the password DemoPassword2026!. This frontend-only build does not connect to Supabase."
+    );
   };
 
   return (
