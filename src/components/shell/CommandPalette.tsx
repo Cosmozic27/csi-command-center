@@ -27,10 +27,12 @@ interface CommandPaletteProps {
 export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const router = useRouter();
   const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (!isOpen) {
       setQuery('');
+      setActiveIndex(0);
     }
   }, [isOpen]);
 
@@ -72,10 +74,28 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     };
   }, [query]);
 
+  const actions = [
+    { label: 'Create Task', description: 'Open the task workspace', href: '/app/tasks', shortcut: 'T' },
+    { label: 'Create Project', description: 'Open the projects workspace', href: '/app/projects', shortcut: 'P' },
+    { label: 'Create Event', description: 'Open the events workspace', href: '/app/events', shortcut: 'E' },
+  ];
+
   const handleSelect = (href: string) => {
     onClose();
     router.push(href);
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex((index) => Math.min((filteredItems.nav?.length || 1) - 1, index + 1)); }
+      if (event.key === 'ArrowUp') { event.preventDefault(); setActiveIndex((index) => Math.max(0, index - 1)); }
+      if (event.key === 'Enter' && filteredItems.nav?.[activeIndex]) { event.preventDefault(); handleSelect(filteredItems.nav[activeIndex].href); }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeIndex, filteredItems.nav, isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -88,10 +108,10 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       />
 
       {/* Palette Container */}
-      <div className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-cyan-500/40 bg-card/95 shadow-2xl shadow-cyan-950/80 backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150">
+      <div className="relative w-full max-w-xl overflow-hidden rounded-2xl border border-[#d8c7b5] bg-[#fffdf8] shadow-[0_24px_70px_-35px_rgba(62,39,35,0.65)] backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150">
         {/* Search Bar */}
         <div className="flex items-center border-b border-border/80 px-4 py-3">
-          <Search className="h-5 w-5 text-cyan-400 shrink-0" />
+          <Search className="h-5 w-5 text-[#795548] shrink-0" />
           <input
             type="text"
             value={query}
@@ -107,6 +127,9 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
         {/* Results List */}
         <div className="max-h-96 overflow-y-auto p-2 space-y-4">
+          {/* Actions Section */}
+          {!query && <div><span className="px-3 text-[10px] font-semibold uppercase tracking-wider text-[#96887d]">Actions</span><div className="mt-1 space-y-0.5">{actions.map((item) => <button key={item.label} onClick={() => handleSelect(item.href)} className="group flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition-colors hover:bg-[#e8ddd0]"><span><span className="block font-semibold text-[#3e2723]">{item.label}</span><span className="text-[10px] text-[#8d6e63]">{item.description}</span></span><kbd className="rounded border border-[#d8c7b5] bg-[#f3ebdd] px-1.5 py-0.5 text-[10px] text-[#795548]">⌘ {item.shortcut}</kbd></button>)}</div></div>}
+
           {/* Navigation Section */}
           {filteredItems.nav && filteredItems.nav.length > 0 && (
             <div>
@@ -120,13 +143,13 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     <button
                       key={item.href}
                       onClick={() => handleSelect(item.href)}
-                      className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-xs text-muted-foreground hover:bg-cyan-500/10 hover:text-cyan-300 transition-colors cursor-pointer group text-left"
+                      className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-xs text-[#6f625a] hover:bg-[#e8ddd0] hover:text-[#3e2723] transition-colors cursor-pointer group text-left"
                     >
                       <span className="flex items-center gap-2.5">
-                        <Icon className="h-4 w-4 text-slate-400 group-hover:text-cyan-400" />
-                        <span className="font-medium text-foreground">{item.label}</span>
+                        <Icon className="h-4 w-4 text-[#8d6e63] group-hover:text-[#795548]" />
+                        <span className="font-medium text-[#3e2723]">{item.label}</span>
                       </span>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400" />
+                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-[#795548]" />
                     </button>
                   );
                 })}

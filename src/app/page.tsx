@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Shield, Layers, ArrowRight, Calendar, Lock, Cpu, Zap, ChevronRight, CheckCircle2, Users, FolderKanban, BarChart3, HelpCircle, Mail, Plus, Minus } from "lucide-react";
+import { Shield, ArrowRight, Lock, ChevronRight, CheckCircle2, Users, FolderKanban, HelpCircle, Mail, Plus, Minus } from "lucide-react";
 import { MOCK_TEAMS } from "@/data/mock-teams";
 import { MOCK_EVENTS } from "@/data/mock-events";
 import { MOCK_PROJECTS } from "@/data/mock-projects";

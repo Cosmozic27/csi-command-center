@@ -1,102 +1,20 @@
 'use client';
 
-import React from 'react';
-import { Search, Bell, Menu, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Bell, Menu, ArrowUpRight, UserRound, CheckSquare, Settings, LogOut } from 'lucide-react';
 import { useMockSession } from '@/contexts/MockSessionContext';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import Link from 'next/link';
 
-interface TopNavProps {
-  onOpenCommandPalette: () => void;
-  onOpenNotifications: () => void;
-  onToggleMobileMenu: () => void;
-  unreadNotificationsCount: number;
-}
+interface TopNavProps { onOpenCommandPalette: () => void; onOpenNotifications: () => void; onToggleMobileMenu: () => void; unreadNotificationsCount: number; }
 
-export function TopNav({
-  onOpenCommandPalette,
-  onOpenNotifications,
-  onToggleMobileMenu,
-  unreadNotificationsCount,
-}: TopNavProps) {
+export function TopNav({ onOpenCommandPalette, onOpenNotifications, onToggleMobileMenu, unreadNotificationsCount }: TopNavProps) {
   const { currentUser } = useMockSession();
-
-  return (
-    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-border/70 bg-background/80 px-4 md:px-6 backdrop-blur-xl">
-      {/* Left: Mobile hamburger + workspace context */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={onToggleMobileMenu}
-          className="md:hidden rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
-
-        <div className="hidden sm:flex flex-col">
-          <span className="text-sm font-semibold text-foreground">Committee workspace</span>
-          <span className="text-xs text-muted-foreground">Plan, coordinate, and deliver together</span>
-        </div>
-      </div>
-
-      {/* Center: Command Palette Trigger Button */}
-      <div className="flex-1 max-w-md mx-4">
-        <button
-          onClick={onOpenCommandPalette}
-          className="w-full flex items-center justify-between rounded-lg border border-border/80 bg-card px-3.5 py-2 text-xs text-muted-foreground hover:border-cyan-500/40 hover:bg-card hover:text-foreground transition-all duration-200 cursor-pointer"
-        >
-          <span className="flex items-center gap-2">
-            <Search className="h-3.5 w-3.5 text-cyan-400" />
-            <span>Search tasks, projects, teams...</span>
-          </span>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-[10px] text-slate-400">
-            Ctrl+K
-          </kbd>
-        </button>
-      </div>
-
-      {/* Right: Notifications, Public Home Link, User Avatar */}
-      <div className="flex items-center gap-2.5">
-        <Link
-          href="/"
-          target="_blank"
-          className="hidden lg:inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-cyan-300 hover:bg-white/5 transition-colors"
-          title="View public landing page"
-        >
-          <span>Public Portal</span>
-          <ArrowUpRight className="h-3 w-3" />
-        </Link>
-
-        {/* Notifications button */}
-        <button
-          onClick={onOpenNotifications}
-          className="relative rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
-          title="Notifications"
-        >
-          <Bell className="h-4 w-4" />
-          {unreadNotificationsCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-cyan-500 text-[9px] font-bold text-slate-950 ring-2 ring-background">
-              {unreadNotificationsCount}
-            </span>
-          )}
-        </button>
-
-        {/* User Pill */}
-        <div className="flex items-center gap-2 pl-2 border-l border-border/60">
-          <UserAvatar
-            name={currentUser.fullName}
-            avatarUrl={currentUser.avatarUrl}
-            size="sm"
-          />
-          <div className="hidden lg:flex flex-col text-left">
-            <span className="text-xs font-semibold text-foreground">
-              {currentUser.fullName}
-            </span>
-            <span className="text-[10px] text-cyan-400 font-mono">
-              {currentUser.primaryRole}
-            </span>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
+  const [profileOpen, setProfileOpen] = useState(false);
+  return <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-[#d8c7b5]/70 bg-[#f3ebdd]/85 px-4 backdrop-blur-xl md:px-6">
+    <div className="flex items-center gap-3"><button onClick={onToggleMobileMenu} className="rounded-lg p-2 text-[#6f625a] hover:bg-[#e8ddd0] hover:text-[#3e2723] md:hidden" aria-label="Open navigation"><Menu className="h-5 w-5" /></button><div className="hidden flex-col sm:flex"><span className="text-sm font-semibold text-[#3e2723]">Committee workspace</span><span className="text-xs text-[#8d6e63]">Plan, coordinate, and deliver together</span></div></div>
+    <div className="mx-4 max-w-md flex-1"><button onClick={onOpenCommandPalette} className="flex w-full items-center justify-between rounded-xl border border-[#d8c7b5] bg-[#fffdf8] px-3.5 py-2 text-xs text-[#8d6e63] shadow-sm transition-all hover:border-[#a67c52] hover:text-[#3e2723]"><span className="flex items-center gap-2"><Search className="h-3.5 w-3.5 text-[#795548]" /><span>Search tasks, projects, teams...</span></span><kbd className="hidden rounded border border-[#d8c7b5] bg-[#f3ebdd] px-1.5 py-0.5 font-mono text-[10px] text-[#795548] sm:inline-flex">Ctrl K</kbd></button></div>
+    <div className="flex items-center gap-2.5"><Link href="/" target="_blank" className="hidden items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium text-[#6f625a] hover:bg-[#e8ddd0] hover:text-[#3e2723] lg:inline-flex">Public Portal <ArrowUpRight className="h-3 w-3" /></Link><button onClick={onOpenNotifications} className="relative rounded-lg p-2 text-[#6f625a] hover:bg-[#e8ddd0] hover:text-[#3e2723]" title="Notifications"><Bell className="h-4 w-4" />{unreadNotificationsCount > 0 && <span className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#5d4037] text-[9px] font-bold text-[#fff8ef] ring-2 ring-[#f3ebdd]">{unreadNotificationsCount}</span>}</button><div className="relative border-l border-[#d8c7b5] pl-2"><button onClick={() => setProfileOpen((open) => !open)} className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-[#e8ddd0]" aria-expanded={profileOpen}><UserAvatar name={currentUser.fullName} avatarUrl={currentUser.avatarUrl} size="sm" /><span className="hidden flex-col text-left lg:flex"><span className="text-xs font-semibold text-[#3e2723]">{currentUser.fullName}</span><span className="text-[10px] font-medium text-[#795548]">{currentUser.primaryRole}</span></span></button>{profileOpen && <div className="absolute right-0 top-12 w-60 rounded-2xl border border-[#d8c7b5] bg-[#fffdf8] p-2 shadow-[0_18px_50px_-24px_rgba(62,39,35,0.65)] animate-in fade-in zoom-in-95 duration-150"><div className="border-b border-[#e8ddd0] px-3 pb-3 pt-2"><p className="text-sm font-bold text-[#3e2723]">{currentUser.fullName}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#8d6e63]">{currentUser.primaryRole}</p></div><div className="py-2"><MenuItem icon={UserRound} label="Profile" href="/app/members" /><MenuItem icon={CheckSquare} label="My tasks" href="/app/tasks" /><MenuItem icon={Settings} label="Workspace preferences" href="/app/dashboard" /></div><div className="border-t border-[#e8ddd0] pt-2"><button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[#9a514b] hover:bg-[#f4e3e0]"><LogOut className="h-3.5 w-3.5" />Sign out</button></div></div>}</div></div>
+  </header>;
 }
+function MenuItem({ icon: Icon, label, href }: { icon: typeof UserRound; label: string; href: string }) { return <Link href={href} className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-[#6f625a] hover:bg-[#e8ddd0] hover:text-[#3e2723]"><Icon className="h-3.5 w-3.5 text-[#795548]" />{label}</Link>; }

@@ -60,6 +60,15 @@ body {
   position: relative;
 }
 
+h1, h2, h3, h4 { letter-spacing: -0.025em; }
+h1 { line-height: 1.08; }
+.ui-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8d6e63; }
+.ui-muted { color: #96887d; }
+.surface-card { border-radius: 12px; background: #fffdf8; box-shadow: 0 8px 22px -20px rgba(62, 39, 35, 0.55); }
+.surface-panel { border-radius: 16px; background: #fffdf8; box-shadow: 0 14px 32px -26px rgba(62, 39, 35, 0.6); }
+.skeleton { background: linear-gradient(90deg, #eee8df 25%, #f7f2e8 45%, #eee8df 65%); background-size: 220% 100%; animation: skeleton-shimmer 1.5s ease-in-out infinite; }
+@keyframes skeleton-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+
 html { scroll-behavior: smooth; }
 @media (pointer: fine) { body, a, button, input, textarea, select { cursor: none; } }
 
