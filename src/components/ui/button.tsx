@@ -21,21 +21,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer';
+      'inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a67c52] focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer';
 
     const variants = {
       primary:
-        'bg-cyan-500 text-slate-950 font-semibold shadow-[0_0_15px_-3px_rgba(0,229,255,0.4)] hover:bg-cyan-400 hover:shadow-[0_0_20px_-3px_rgba(0,229,255,0.6)] active:scale-[0.98]',
+        'bg-[#5d4037] text-[#fff8ef] font-semibold shadow-sm hover:bg-[#3e2723] active:scale-[0.98]',
       secondary:
-        'bg-secondary text-white shadow-[0_0_15px_-3px_rgba(99,102,241,0.4)] hover:bg-secondary/90 hover:shadow-[0_0_20px_-3px_rgba(99,102,241,0.6)] active:scale-[0.98]',
+        'bg-[#795548] text-[#fff8ef] shadow-sm hover:bg-[#5d4037] active:scale-[0.98]',
       outline:
-        'border border-border bg-card/50 text-foreground hover:bg-accent/40 hover:border-cyan-500/40 hover:text-cyan-300 hover:shadow-[0_0_15px_-5px_rgba(0,229,255,0.2)] active:scale-[0.98]',
+        'border border-[#b89e88] bg-[#fffdf8] text-[#5d4037] hover:bg-[#e3d4c2] hover:border-[#795548] active:scale-[0.98]',
       ghost:
-        'text-muted-foreground hover:bg-accent/60 hover:text-foreground active:scale-[0.98]',
+        'text-[#5d4037] hover:bg-accent/60 hover:text-[#3e2723] active:scale-[0.98]',
       destructive:
-        'bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500/30 hover:shadow-[0_0_15px_-3px_rgba(239,68,68,0.4)] active:scale-[0.98]',
+        'bg-[#a85d55] border border-[#914c46] text-[#fff8ef] hover:bg-[#914c46] active:scale-[0.98]',
       cyber:
-        'border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-400 hover:shadow-[0_0_20px_0_rgba(0,229,255,0.3)] active:scale-[0.98] font-mono tracking-wider',
+        'border border-[#b89e88] bg-transparent text-[#5d4037] hover:bg-[#e3d4c2] hover:border-[#795548] active:scale-[0.98]',
     };
 
     const sizes = {

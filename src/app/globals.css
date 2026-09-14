@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f0e8;
-  --foreground: #302824;
+  --background: #f3ebdd;
+  --foreground: #2e211d;
   --card: #fffdf8;
   --card-foreground: #302824;
   --popover: #fffdf8;
@@ -11,22 +11,22 @@
   --primary-foreground: #fffdf8;
   --secondary: #8d6e63;
   --secondary-foreground: #fffdf8;
-  --muted: #eee5da;
-  --muted-foreground: #756b63;
-  --accent: #e8ded0;
-  --accent-foreground: #4e342e;
+  --muted: #e8ddd0;
+  --muted-foreground: #6f625a;
+  --accent: #e3d4c2;
+  --accent-foreground: #5d4037;
   --destructive: #a85d55;
   --destructive-foreground: #fffdf8;
-  --border: #d8cabb;
-  --input: #d8cabb;
+  --border: #d8c7b5;
+  --input: #d8c7b5;
   --ring: #a67c52;
   --radius: 0.75rem;
 
-  --chart-1: #00e5ff;
-  --chart-2: #6366f1;
-  --chart-3: #10b981;
-  --chart-4: #f59e0b;
-  --chart-5: #ec4899;
+  --chart-1: #5d4037;
+  --chart-2: #795548;
+  --chart-3: #6f8b72;
+  --chart-4: #b1844f;
+  --chart-5: #a67c52;
 }
 
 @theme inline {
@@ -93,35 +93,27 @@ body::before {
 
 /* Shared surfaces */
 .glass-panel {
-  background: rgba(17, 27, 45, 0.92);
+  background: rgba(255, 253, 248, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(216, 199, 181, 0.9);
 }
 
 .glass-panel-hover {
   transition: all 0.2s ease-in-out;
 }
 .glass-panel-hover:hover {
-  background: rgba(25, 39, 62, 0.95);
-  border-color: rgba(40, 184, 223, 0.45);
-  box-shadow: 0 12px 30px -24px rgba(0, 0, 0, 0.8);
+  background: rgba(255, 253, 248, 1);
+  border-color: rgba(166, 124, 82, 0.5);
+  box-shadow: 0 12px 30px -24px rgba(78, 52, 46, 0.45);
 }
 
-.glow-cyan {
-  box-shadow: 0 0 20px -5px rgba(0, 229, 255, 0.35);
-}
-
-.glow-violet {
-  box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.35);
-}
-
-.glow-emerald {
-  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.35);
+.glow-cyan, .glow-violet, .glow-emerald {
+  box-shadow: 0 10px 24px -20px rgba(78, 52, 46, 0.45);
 }
 
 .border-glow {
-  border-color: rgba(0, 229, 255, 0.4);
+  border-color: rgba(166, 124, 82, 0.45);
 }
 
 /* Kept as a compatibility utility; application surfaces no longer use it globally. */
@@ -142,7 +134,11 @@ body::before {
 [class*="bg-slate-"] { background-color: #fffdf8 !important; }
 [class*="text-slate-"] { color: #756b63 !important; }
 [class*="border-slate-"] { border-color: #d8cabb !important; }
-[class*="text-white"] { color: #302824 !important; }
+[class*="text-white"] { color: #fff8ef !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
 
 .badge-pulse {
   animation: pulse-subtle 2s infinite ease-in-out;

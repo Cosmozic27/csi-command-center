@@ -58,12 +58,12 @@ export function Sidebar() {
       {/* Brand Header */}
       <div className="flex h-16 items-center justify-between px-4 border-b border-border/60">
         <Link href="/app/dashboard" className="flex items-center gap-3 group">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-400 ring-1 ring-cyan-300/30">
-            <Shield className="h-5 w-5 text-slate-950" />
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#5d4037]">
+            <Shield className="h-5 w-5 text-[#fff8ef]" />
           </div>
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="font-bold text-sm tracking-wider text-foreground uppercase group-hover:text-cyan-400 transition-colors">
+              <span className="font-bold text-sm tracking-wider text-[#3e2723] uppercase group-hover:text-[#795548] transition-colors">
                 CSI Command
               </span>
               <span className="text-[10px] text-muted-foreground tracking-wide">
@@ -86,13 +86,13 @@ export function Sidebar() {
         <div className="px-3 py-3 border-b border-border/40">
           <button
             onClick={() => setShowTeamsDropdown(!showTeamsDropdown)}
-            className="w-full flex items-center justify-between rounded-lg border border-cyan-500/20 bg-cyan-500/5 px-3 py-2 text-xs font-semibold text-cyan-300 hover:bg-cyan-500/10 transition-all cursor-pointer"
+            className="w-full flex items-center justify-between rounded-lg border border-[#cdb8a5] bg-[#f3ebdd] px-3 py-2 text-xs font-semibold text-[#5d4037] hover:bg-[#fffdf8] transition-all cursor-pointer"
           >
             <span className="flex items-center gap-2">
-              <Layers className="h-3.5 w-3.5 text-cyan-400" />
+              <Layers className="h-3.5 w-3.5 text-[#795548]" />
               <span>Team Portals</span>
             </span>
-            <span className="text-[10px] bg-cyan-500/20 px-1.5 py-0.5 rounded text-cyan-300">
+            <span className="text-[10px] bg-[#5d4037] px-1.5 py-0.5 rounded text-[#fff8ef]">
               9
             </span>
           </button>
@@ -131,14 +131,14 @@ export function Sidebar() {
               href={item.href}
               className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 isActive
-                  ? 'bg-cyan-400/10 text-cyan-300 border border-cyan-400/25'
-                  : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
+                  ? 'bg-[#5d4037] text-[#fff8ef] border border-[#5d4037]'
+                  : 'text-[#5d4037] hover:bg-[#f3ebdd] hover:text-[#3e2723]'
               } ${collapsed ? 'justify-center' : ''}`}
               title={collapsed ? item.name : undefined}
             >
               <Icon
                 className={`h-4 w-4 shrink-0 transition-colors ${
-                  isActive ? 'text-cyan-400' : 'text-muted-foreground group-hover:text-foreground'
+                  isActive ? 'text-[#fff8ef]' : 'text-[#795548] group-hover:text-[#3e2723]'
                 }`}
               />
               {!collapsed && (
@@ -148,8 +148,8 @@ export function Sidebar() {
                     <span
                       className={`rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
                         isActive
-                          ? 'bg-cyan-500/25 text-cyan-300'
-                          : 'bg-muted text-muted-foreground'
+                          ? 'bg-[#795548] text-[#fff8ef]'
+                          : 'bg-[#f3ebdd] text-[#756b63]'
                       }`}
                     >
                       {item.badge}
