@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react';
+ 'use client';
+import type { ReactNode, CSSProperties } from 'react';
+import { SpotlightCard } from '@/components/experience/ExperienceLayer';
 
 export function WorkspaceCard({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-xl border border-border/70 bg-card/90 p-5 shadow-sm ${className}`}>{children}</section>;
+  return <SpotlightCard className={`rounded-xl border border-border/70 bg-card/90 p-5 shadow-sm ${className}`}>{children}</SpotlightCard>;
 }
 
 export function PageIntro({ eyebrow, title, description, action }: { eyebrow: string; title: string; description: string; action?: ReactNode }) {
@@ -9,7 +11,7 @@ export function PageIntro({ eyebrow, title, description, action }: { eyebrow: st
 }
 
 export function ProgressBar({ value, color = 'bg-cyan-400' }: { value: number; color?: string }) {
-  return <div className="h-2 overflow-hidden rounded-full bg-muted"><div className={`h-full rounded-full ${color}`} style={{ width: `${Math.min(100, Math.max(0, value))}%` }} /></div>;
+  return <div className="h-2 overflow-hidden rounded-full bg-muted"><div className={`progress-fill h-full rounded-full ${color}`} style={{ '--progress-value': `${Math.min(100, Math.max(0, value))}%` } as CSSProperties} /></div>;
 }
 
 export function Pill({ children, tone = 'slate' }: { children: ReactNode; tone?: 'cyan' | 'violet' | 'emerald' | 'amber' | 'red' | 'slate' }) {
